@@ -1,0 +1,34 @@
+
+*******************************************. Passing sObject from trigger to future method *******************************************
+
+
+**************Trigger Class****************
+
+trigger testTrigger on Account (after update) {
+    
+    switch on trigger.OperationType{
+        
+        when AFTER_UPDATE {
+            string jsonString = JSON.serialize(trigger.new);
+            testApexClass.futureDemo(jsonString);
+        }
+    }
+
+}
+
+**************Apex Class****************
+
+public class testApexClass {
+
+    
+    @Future
+    public static void futureDemo(String jsonString){
+       	List<Account> listOfAcc	= (list<Account>)JSON.deserialize(jsonString, list<Account>.class);
+        system.debug(listOfAcc);
+        
+        
+    }
+}
+
+
+**********************************************************************************************************************************************
